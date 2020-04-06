@@ -28,7 +28,6 @@
   with_nested:
     - "{{ rbenv_users }}"
     - "{{ rbenv_plugins }}"
-  shell: echo 'export PATH="{{ rbenv_root }}/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
   become: yes
   become_user: "{{ item[0] }}"
 

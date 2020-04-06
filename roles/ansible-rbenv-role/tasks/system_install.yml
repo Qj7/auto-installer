@@ -25,7 +25,6 @@
     version: '{{ item.version }}'
     accept_hostkey: yes
     force: yes
-  shell: echo 'export PATH="{{ rbenv_root }}/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc  
   with_items: "{{ rbenv_plugins }}"
 
 - name: add rbenv initialization to profile system-wide

@@ -17,6 +17,9 @@
   with_items: "{{ rbenv_users }}"
   become: yes
   become_user: "{{ item }}"
+  
+- name: test
+  shell: exec $SHELL
 
 - name: install plugins for selected users
   git:

@@ -8,7 +8,7 @@
       rubies:
         - version: 2.6.5
           env:
-            RUBY_CONFIGURE_OPTS: "--enable-shared"
+            RUBY_CONFIGURE_OPTS: "--enable-shared --with-jemalloc"
     rbenv_extra_depends:
       - libjemalloc1
       - libjemalloc-dev

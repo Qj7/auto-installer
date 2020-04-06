@@ -117,7 +117,7 @@
   
 - name: check async task
   async_status:
-    jid: "{{ ruby_progress.ansible_job_id }}"
+    jid: '{{ ruby_progress.ansible_job_id }}'
   register: job_result
   until: job_result.finished
   retries: 30  

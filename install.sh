@@ -6,6 +6,8 @@ is_root?
 curl -fsSL https://github.com/Qj7/auto-installer/archive/master.tar.gz | tar xz
 cd auto-installer-master
 ansible-playbook playbook.yml -vvv
+cd ..
+rm -rf auto-installer-master
 
 is_root?() {
     if

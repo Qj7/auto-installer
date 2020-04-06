@@ -111,16 +111,6 @@
     - "{{ rbenv_users }}"
     - "{{ rbenv.rubies }}"
   environment: "{{ item[1].env | default({}) | combine({ 'TMPDIR': rbenv_tmpdir }) }}"
-  async: 1000
-  poll: 0
-  register: ruby_progress
-  
-- name: check async task
-  async_status:
-    jid: '{{ ruby_progress.ansible_job_id }}'
-  register: job_result
-  until: job_result.finished
-  retries: 30  
 
 - name: check which old rubies to remove for select users
   set_fact:

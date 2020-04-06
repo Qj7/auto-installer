@@ -2,22 +2,13 @@
   gather_facts: true
   vars:
     rbenv:
-      env: system
+      env: user
       version: v1.1.2
-      default_ruby:  2.6.5p114
-      rubies:
-        - version: 2.6.5p114
-          env:
-            RUBY_CONFIGURE_OPTS: "--enable-shared"
-        - version: 2.6.5p114
-          env:
-            RUBY_CONFIGURE_OPTS: "--enable-shared --with-jemalloc"
-      rbenv_plugins:
-        - version: 2.6.5p114  
+      default_ruby:  2.6.5
     rbenv_extra_depends:
       - libjemalloc1
       - libjemalloc-dev
   
   roles:
-    - { role: 'ansible-rbenv-role', tags: 'init', rbenv_users: {{ ansible_user_id }} }
+    - { role: 'ansible-rbenv-role', tags: 'init', rbenv_users: "{{ ansible_user_id }}" }
     - { role: 'ansible-role-nodejs', tags: 'init' }

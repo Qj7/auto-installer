@@ -4,9 +4,9 @@
     rbenv:
       env: user
       version: v1.1.2
-      default_ruby: 2.6.5p114
+      default_ruby: 2.6.5
       rubies:
-        - version: 2.6.5p114
+        - version: 2.6.5
     rbenv_extra_depends:
       - libjemalloc1
       - libjemalloc-dev

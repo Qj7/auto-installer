@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 is_root?
 curl -fsSL https://github.com/Qj7/auto-installer/archive/master.tar.gz | tar xz
 cd auto-installer-master

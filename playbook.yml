@@ -13,4 +13,4 @@
   
   roles:
     - { role: 'ansible-rbenv-role', tags: 'init', rbenv_users: "{{ ansible_user_id }}" }
-    - { role: 'ansible-role-nodejs', tags: 'init' }
+    - { role: 'ansible-role-nodejs', tags: 'init', become: yes }

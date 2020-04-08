@@ -85,9 +85,8 @@
     - rbenv_set_vars | bool
 
 - name: check ruby versions installed for select users
+  sudo: no
   shell: $0 -lc "source {{ ansible_env.HOME }}/.bashrc && rbenv versions --bare"
-  args:
-    executable: /bin/bash
   with_items: "{{ rbenv_users }}"
   become: yes
   become_user: "{{ item }}"
@@ -95,13 +94,12 @@
   changed_when: false
   failed_when: false
   check_mode: no
-  
 
 - name: install ruby {{ item[1].version }} for select users
+  sudo: no
   shell: $0 -lc "source {{ ansible_env.HOME }}/.bashrc && rbenv install --skip-existing {{ item[1].version }}"
   become: yes
   args:
-    executable: /bin/bash
     creates: "~/.rbenv/versions/{{ item[1].version }}"
   become_user: "{{ item[0] }}"
   with_nested:
@@ -135,9 +133,8 @@
   when: rbenv_clean_up | bool
 
 - name: check if user ruby version is {{ rbenv.default_ruby }}
+  sudo: no
   shell: $0 -lc "source {{ ansible_env.HOME }}/.bashrc && rbenv version | cut -d ' ' -f 1 | grep -Fx '{{ rbenv.default_ruby }}'"
-  args:
-    executable: /bin/bash
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ rbenv_users }}"
@@ -147,9 +144,8 @@
   check_mode: no
 
 - name: set ruby {{ rbenv.default_ruby }} for select users
+  sudo: no
   shell: $0 -lc "source {{ ansible_env.HOME }}/.bashrc && rbenv global {{ rbenv.default_ruby }} && rbenv rehash"
-  args:
-    executable: /bin/bash
   become: yes
   become_user: "{{ item[1] }}"
   with_together:

@@ -48,8 +48,9 @@
     
 - name: Source .bashrc
   shell: . .bashrc
-  become: true
-  become_user: {{ ansible_user_id }}
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
 
 - name: set default-gems for select users
   copy:

@@ -45,15 +45,6 @@
     insertafter: EOF
     create: yes
   when: test_grep.stdout == "0"  
-    
-- name: Source .bashrc
-  sudo: no
-  shell: "source {{ ansible_env.HOME }}/.bashrc"
-  with_items: "{{ rbenv_users }}"
-  args:
-    executable: /bin/bash
-  become: yes
-  become_user: "{{ item }}"
 
 - name: set default-gems for select users
   copy:
@@ -107,6 +98,7 @@
   shell: $0 -lc "rbenv install --skip-existing {{ item[1].version }}"
   become: yes
   args:
+    executable: /bin/bash
     creates: "~/.rbenv/versions/{{ item[1].version }}"
   become_user: "{{ item[0] }}"
   with_nested:

@@ -31,24 +31,19 @@
   become: yes
   become_user: "{{ item[0] }}"
 
-- name: add rbenv initialization to profile system-wide
-  template:
-    src: rbenv_user.sh.j2
-    dest: /etc/profile.d/rbenv.sh
-    owner: root
-    group: root
-    mode: 0755
-  become: yes
-  when:
-    - (ansible_os_family != 'OpenBSD' and ansible_os_family != 'Darwin') and rbenv_user_profile
-
-- name: add rbenv initialization to profile system-wide
+- name: Ensure rbenv is sourced from the .bashrc
   blockinfile:
-    block: "{{ lookup('template', 'rbenv_user.sh.j2') }}"
-    dest: /etc/profile
-  become: yes
-  when:
-    - ansible_os_family == 'Darwin' and rbenv_user_profile
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export PATH=$HOME/.rbenv/bin:$PATH;
+      export RBENV_ROOT=$HOME/.rbenv;
+      eval "$(rbenv init -)";
+    marker: '# ANSIBLE MANAGED BLOCK - rbenv'
+    insertbefore: BOF
+    create: yes
+    
+- name: Reload shell
+  shell: exec $SHELL
 
 - name: set default-gems for select users
   copy:

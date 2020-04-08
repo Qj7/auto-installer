@@ -31,6 +31,10 @@
   become: yes
   become_user: "{{ item[0] }}"
 
+- name: Test bashrc for line
+  shell: "grep '# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc"
+  register: test_grep
+
 - name: Ensure rbenv is sourced from the .bashrc
   blockinfile:
     dest: "{{ ansible_env.HOME }}/.bashrc"
@@ -39,11 +43,14 @@
       export RBENV_ROOT=$HOME/.rbenv;
       eval "$(rbenv init -)";
     marker: '# ANSIBLE MANAGED BLOCK - rbenv'
-    insertbefore: BOF
+    insertafter: EOF
     create: yes
+  when: test_grep.stdout != ""  
     
 - name: Reload shell
-  shell: exec $SHELL
+  shell: "sudo -iu {{ item[0] }}"
+  become: yes
+  become_user: "{{ item[0] }}"
 
 - name: set default-gems for select users
   copy:

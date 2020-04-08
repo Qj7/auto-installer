@@ -98,7 +98,10 @@
   check_mode: no
 
 - name: install ruby {{ item[1].version }} for select users
-  shell: rbenv install --skip-existing {{ item[1].version }}
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}"
+    eval "$(rbenv init -)" 
+    rbenv install --skip-existing {{ item[1].version }}
   become: yes
   args:
     creates: "~/.rbenv/versions/{{ item[1].version }}"
@@ -134,7 +137,10 @@
   when: rbenv_clean_up | bool
 
 - name: check if user ruby version is {{ rbenv.default_ruby }}
-  shell: $0 -lc "rbenv version | cut -d ' ' -f 1 | grep -Fx '{{ rbenv.default_ruby }}'"
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}"
+    eval "$(rbenv init -)" 
+    rbenv version | cut -d ' ' -f 1 | grep -Fx '{{ rbenv.default_ruby }}'
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ rbenv_users }}"
@@ -144,7 +150,10 @@
   check_mode: no
 
 - name: set ruby {{ rbenv.default_ruby }} for select users
-  shell: $0 -lc "rbenv global {{ rbenv.default_ruby }} && rbenv rehash"
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}"
+    eval "$(rbenv init -)" 
+    rbenv global {{ rbenv.default_ruby }} && rbenv rehash
   become: yes
   become_user: "{{ item[1] }}"
   with_together:

@@ -47,8 +47,11 @@
   when: test_grep.stdout == "0"  
     
 - name: Source .bashrc
+  sudo: no
   shell: "source {{ ansible_env.HOME }}/.bashrc"
   with_items: "{{ rbenv_users }}"
+  args:
+    executable: /bin/bash
   become: yes
   become_user: "{{ item }}"
 

@@ -32,9 +32,7 @@
   become_user: "{{ item[0] }}"
 
 - name: Test bashrc for line
-  shell: "grep '^# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc"
-  changed_when: false
-  failed_when: false
+  shell: "grep '^# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc -c || true"
   register: test_grep
 
 - name: Ensure rbenv is sourced from the .bashrc
@@ -47,12 +45,13 @@
     marker: '# ANSIBLE MANAGED BLOCK - rbenv'
     insertafter: EOF
     create: yes
-  when: test_grep.stdout != ""  
+  when: test_grep.stdout == "0"  
     
 - name: Reload shell
-  shell: "sudo -iu {{ item[0] }}"
+  shell: "sudo -iu {{ item }}"
+  with_items: "{{ rbenv_users }}"
   become: yes
-  become_user: "{{ item[0] }}"
+  become_user: "{{ item }}"
 
 - name: set default-gems for select users
   copy:

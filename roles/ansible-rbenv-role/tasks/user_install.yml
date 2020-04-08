@@ -32,26 +32,20 @@
   become_user: "{{ item[0] }}"
 
 - name: Test bashrc for line
-  shell: "grep '^# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc -c || true"
+  shell: "grep '^export PATH=$HOME/.rbenv/bin:$PATH;' {{ ansible_env.HOME }}/.bashrc -c || true"
   register: test_grep
 
 - name: Ensure rbenv is sourced from the .bashrc
   blockinfile:
     dest: "{{ ansible_env.HOME }}/.bashrc"
     block: |
+      
       export PATH=$HOME/.rbenv/bin:$PATH;
       export RBENV_ROOT=$HOME/.rbenv;
       eval "$(rbenv init -)";
-    marker: '# ANSIBLE MANAGED BLOCK - rbenv'
     insertafter: EOF
     create: yes
   when: test_grep.stdout == "0"  
-    
-- name: Reload shell
-  shell: "sudo -iu {{ item }}"
-  with_items: "{{ rbenv_users }}"
-  become: yes
-  become_user: "{{ item }}"
 
 - name: set default-gems for select users
   copy:
@@ -102,7 +96,7 @@
   check_mode: no
 
 - name: install ruby {{ item[1].version }} for select users
-  shell: $0 -lc "rbenv install --skip-existing {{ item[1].version }}"
+  shell: $0 -lc "sudo -iu {{ item[0] }} && rbenv install --skip-existing {{ item[1].version }}"
   become: yes
   args:
     creates: "~/.rbenv/versions/{{ item[1].version }}"
@@ -138,7 +132,7 @@
   when: rbenv_clean_up | bool
 
 - name: check if user ruby version is {{ rbenv.default_ruby }}
-  shell: $0 -lc "bin/rbenv version | cut -d ' ' -f 1 | grep -Fx '{{ rbenv.default_ruby }}'"
+  shell: $0 -lc "sudo -iu {{ item[0] }} && rbenv version | cut -d ' ' -f 1 | grep -Fx '{{ rbenv.default_ruby }}'"
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ rbenv_users }}"
@@ -148,7 +142,7 @@
   check_mode: no
 
 - name: set ruby {{ rbenv.default_ruby }} for select users
-  shell: $0 -lc "bin/rbenv global {{ rbenv.default_ruby }} && rbenv rehash"
+  shell: $0 -lc " sudo -iu {{ item[0] }} && rbenv global {{ rbenv.default_ruby }} && rbenv rehash"
   become: yes
   become_user: "{{ item[1] }}"
   with_together:

@@ -32,7 +32,7 @@
   become_user: "{{ item[0] }}"
 
 - name: Test bashrc for line
-  shell: "grep '# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc"
+  shell: grep '^# ANSIBLE MANAGED BLOCK - rbenv' {{ ansible_env.HOME }}/.bashrc
   register: test_grep
 
 - name: Ensure rbenv is sourced from the .bashrc

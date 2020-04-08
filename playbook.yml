@@ -2,7 +2,7 @@
   gather_facts: true
   vars:
     rbenv:
-      env: test
+      env: user
       version: v1.1.2
       default_ruby: 2.6.5
       rubies:

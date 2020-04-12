@@ -28,8 +28,8 @@
     - libxml2-dev
     - libxslt1-dev
     - zlib1g-dev
-    state: present
-    install_recommends: no 
+  state: present
+  install_recommends: no 
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
@@ -44,8 +44,8 @@
     - openssl-devel
     - readline-devel
     - zlib-devel
-    state: present
-    install_recommends: no
+  state: present
+  install_recommends: no
   when: ansible_facts['distribution'] == "CentOS"
   
 - name: clone rbenv

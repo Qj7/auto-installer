@@ -17,31 +17,33 @@
 
 - name: install packages Ubuntu
   apt:
-    - build-essential
-    - curl
-    - git
-    - libcurl4-openssl-dev
-    - libffi-dev
-    - libreadline-dev
-    - libssl-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - zlib1g-dev
+    with_items:
+      - build-essential
+      - curl
+      - git
+      - libcurl4-openssl-dev
+      - libffi-dev
+      - libreadline-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - zlib1g-dev
     state: present
     install_recommends: no 
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
   yum:
-    - bzip2
-    - curl
-    - gcc
-    - git
-    - libffi-devel
-    - libyaml-devel
-    - openssl-devel
-    - readline-devel
-    - zlib-devel
+    with_items:
+      - bzip2
+      - curl
+      - gcc
+      - git
+      - libffi-devel
+      - libyaml-devel
+      - openssl-devel
+      - readline-devel
+      - zlib-devel
     state: present
     install_recommends: no
   when: ansible_facts['distribution'] == "CentOS"
@@ -105,19 +107,21 @@
 
 - name: Install PostgreSQL Ubuntu
   apt:
-    - postgresql
-    - postgresql-contrib
-    - libpq-dev
-    - python-psycopg2
+    with_items:
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+      - python-psycopg2
   when: ansible_facts['distribution'] == "Ubuntu" 
 
 - name: Install PostgreSQL CentOS
   yum:
-    - postgresql
-    - postgresql-server
-    - postgresql-contrib
-    - postgresql-plpython
-    - python-psycopg2
+    with_items:
+      - postgresql
+      - postgresql-server
+      - postgresql-contrib
+      - postgresql-plpython
+      - python-psycopg2
   when: ansible_facts['distribution'] == "CentOS"
     
 - name: Ensuring postgresql is started and enabled

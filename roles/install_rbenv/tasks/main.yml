@@ -80,8 +80,6 @@
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     rbenv install --skip-existing {{ ruby_version }} && \
     rbenv global {{ ruby_version }} && rbenv rehash
-  become: yes
-  become_user: "{{ rbnev_user }}"  
 
 - name: install bundler
   shell: |
@@ -89,8 +87,6 @@
     eval "$(rbenv init -)" \
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     gem install bundler --no-ri --no-rdoc
-  become: yes
-  become_user: "{{ rbnev_user }}"
 
 - name: install rails
   shell: |
@@ -98,9 +94,7 @@
     eval "$(rbenv init -)" \
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     gem install rails -v {{ rails_version }} --no-ri --no-rdoc && rbenv rehash
-  become: yes
-  become_user: "{{ rbnev_user }}"
-
+    
 - name: Install PostgreSQL Ubuntu
   apt: name={{ item }} state=present install_recommends=no
   with_items:

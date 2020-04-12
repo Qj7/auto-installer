@@ -47,14 +47,14 @@
 - name: clone rbenv
   git:
     repo: "{{ rbenv_repo }}"
-    dest: ~/.rbenv
+    dest: "{{ ansible_env.HOME }}/.rbenv"
     accept_hostkey: yes
     force: yes
 
 - name: clone rbenv plugins
   git:
     repo: "{{ ruby_build_repo }}"
-    dest: ~/.rbenv/plugins/ruby-build
+    dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
     accept_hostkey: yes
     force: yes
 
@@ -67,7 +67,7 @@
     dest: "{{ ansible_env.HOME }}/.bashrc"
     block: |
       export PATH=$HOME/.rbenv/bin:$PATH;
-      export RBENV_ROOT=$HOME/.rbenv;
+      export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
       eval "$(rbenv init -)";
     insertafter: EOF
     create: yes

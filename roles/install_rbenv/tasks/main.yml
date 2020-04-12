@@ -16,7 +16,7 @@
   when: ansible_facts['distribution'] == "CentOS"  
 
 - name: install packages Ubuntu
-  apt: name={{ item }}
+  apt: name={{ item }} state=present install_recommends=no
   with_items:
     - build-essential
     - curl
@@ -28,12 +28,10 @@
     - libxml2-dev
     - libxslt1-dev
     - zlib1g-dev
-  state: present
-  install_recommends: no 
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
-  yum: name={{ item }}
+  yum: name={{ item }} state=present install_recommends=no
   with_items:
     - bzip2
     - curl
@@ -44,8 +42,6 @@
     - openssl-devel
     - readline-devel
     - zlib-devel
-  state: present
-  install_recommends: no
   when: ansible_facts['distribution'] == "CentOS"
   
 - name: clone rbenv
@@ -106,26 +102,22 @@
   become_user: "{{ rbnev_user }}"
 
 - name: Install PostgreSQL Ubuntu
-  apt: name={{ item }}
+  apt: name={{ item }} state=present install_recommends=no
   with_items:
     - postgresql
     - postgresql-contrib
     - libpq-dev
     - python-psycopg2
-  state: present
-  install_recommends: no 
   when: ansible_facts['distribution'] == "Ubuntu" 
 
 - name: Install PostgreSQL CentOS
-  yum: name={{ item }}
+  yum: name={{ item }} state=present install_recommends=no
   with_items:
     - postgresql
     - postgresql-server
     - postgresql-contrib
     - postgresql-plpython
     - python-psycopg2
-  state: present
-  install_recommends: no
   when: ansible_facts['distribution'] == "CentOS"
     
 - name: Ensuring postgresql is started and enabled

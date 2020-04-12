@@ -46,14 +46,14 @@
   
 - name: clone rbenv
   git:
-    repo: '{{ rbenv_repo }}'
+    repo: "{{ rbenv_repo }}"
     dest: ~/.rbenv
     accept_hostkey: yes
     force: yes
 
 - name: clone rbenv plugins
   git:
-    repo: '{{ ruby_build_repo }}'
+    repo: "{{ ruby_build_repo }}"
     dest: ~/.rbenv/plugins/ruby-build
     accept_hostkey: yes
     force: yes

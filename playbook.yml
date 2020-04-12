@@ -14,5 +14,5 @@
       - libjemalloc-dev
   
   roles:
-    - { role: 'ansible-rbenv-role', tags: 'init', rbenv_users: "{{ ansible_user_id }}" }
+    - { role: 'install_rbenv', tags: 'init', rbenv_users: "{{ ansible_user_id }}" }
     - { role: 'ansible-role-nodejs', tags: 'init', become: yes }

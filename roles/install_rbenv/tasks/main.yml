@@ -1,0 +1,121 @@
+---
+- name: update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  become: true
+  changed_when: false
+  when: ansible_facts['distribution'] == "Ubuntu"
+  
+- name: update yum cache
+  yum:
+    update_cache: yes
+    cache_valid_time: 86400
+  become: true
+  changed_when: false
+  when: ansible_facts['distribution'] == "CentOS"  
+
+- name: install packages Ubuntu
+  apt:
+    - build-essential
+    - curl
+    - git
+    - libcurl4-openssl-dev
+    - libffi-dev
+    - libreadline-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - zlib1g-dev
+    state: present
+    install_recommends: no 
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: install packages for CentOS
+  yum:
+    - bzip2
+    - curl
+    - gcc
+    - git
+    - libffi-devel
+    - libyaml-devel
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+    state: present
+    install_recommends: no
+  when: ansible_facts['distribution'] == "CentOS"
+  
+- name: clone rbenv
+  git:
+    repo: '{{ rbenv_repo }}'
+    dest: ~/.rbenv
+    accept_hostkey: yes
+    force: yes
+
+- name: clone rbenv plugins
+  git:
+    repo: '{{ ruby_build_repo }}'
+    dest: ~/.rbenv/plugins/ruby-build
+    accept_hostkey: yes
+    force: yes
+
+- name: Test bashrc for line
+  shell: "grep '^export PATH=$HOME/.rbenv/bin:$PATH;' {{ ansible_env.HOME }}/.bashrc -c || true"
+  register: test_grep
+
+- name: Ensure rbenv is sourced from the .bashrc
+  blockinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export PATH=$HOME/.rbenv/bin:$PATH;
+      export RBENV_ROOT=$HOME/.rbenv;
+      eval "$(rbenv init -)";
+    insertafter: EOF
+    create: yes
+  when: test_grep.stdout == "0"  
+  
+- name: install ruby
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
+    rbenv install --skip-existing {{ ruby_version }} && \
+    rbenv global {{ ruby_version }} && rbenv rehash
+
+- name: install bundler
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
+    gem install bundler --no-ri --no-rdoc
+
+- name: install bundler
+  shell: |
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
+    gem install rails -v {{ rails_version }} --no-ri --no-rdoc && rbenv rehash
+    
+- name: Install PostgreSQL Ubuntu
+  apt:
+    - postgresql
+    - postgresql-contrib
+    - libpq-dev
+    - python-psycopg2
+  when: ansible_facts['distribution'] == "Ubuntu" 
+
+- name: Install PostgreSQL CentOS
+  yum:
+    - postgresql
+    - postgresql-server
+    - postgresql-contrib
+    - postgresql-plpython
+    - python-psycopg2
+  when: ansible_facts['distribution'] == "CentOS"
+    
+- name: Ensuring postgresql is started and enabled
+  service:
+    name: postgresql
+    state: started
+    enabled: True    

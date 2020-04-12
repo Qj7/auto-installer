@@ -1,0 +1,4 @@
+ruby_version: 2.6.5
+rails_versions: 5.2.4.2
+rbenv_repo: https://github.com/rbenv/rbenv.git
+ruby_build_repo: https://github.com/rbenv/ruby-build.git

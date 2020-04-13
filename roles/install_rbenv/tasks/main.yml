@@ -28,6 +28,8 @@
     - libxml2-dev
     - libxslt1-dev
     - zlib1g-dev
+  become: yes
+  become_user: "{{ ansible_user }}"
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
@@ -42,6 +44,8 @@
     - openssl-devel
     - readline-devel
     - zlib-devel
+  become: yes
+  become_user: "{{ ansible_user }}"
   when: ansible_facts['distribution'] == "CentOS"
   
 - name: clone rbenv
@@ -50,6 +54,8 @@
     dest: "{{ ansible_env.HOME }}/.rbenv"
     accept_hostkey: yes
     force: yes
+  become: yes
+  become_user: "{{ ansible_user }}"  
 
 - name: clone rbenv plugins
   git:
@@ -57,6 +63,8 @@
     dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
     accept_hostkey: yes
     force: yes
+  become: yes
+  become_user: "{{ ansible_user }}"  
 
 - name: Test bashrc for line
   shell: "grep '^export PATH=$HOME/.rbenv/bin:$PATH;' {{ ansible_env.HOME }}/.bashrc -c || true"
@@ -82,7 +90,9 @@
     rbenv global {{ ruby_version }} && \
     rbenv rehash
   args:
-    executable: /bin/bash  
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ ansible_user }}"  
 
 - name: install bundler
   shell: |

@@ -16,38 +16,23 @@
   when: ansible_facts['distribution'] == "CentOS"  
 
 - name: install packages Ubuntu
-  apt: name={{ item }} state=present install_recommends=no
-  with_items:
-    - "{{ rbenv_user }}"
-    - build-essential
-    - curl
-    - git
-    - libcurl4-openssl-dev
-    - libffi-dev
-    - libreadline-dev
-    - libssl-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - zlib1g-dev
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+    install_recommends: no
+  with_items: "{{ rbenv_users }}"
   become: yes
-  become_user: "{{ item[0] }}"
+  become_user: "{{ item }}"
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
-  yum: name={{ item }} state=present install_recommends=no
-  with_items:
-    - "{{ rbenv_user }}"
-    - bzip2
-    - curl
-    - gcc
-    - git
-    - libffi-devel
-    - libyaml-devel
-    - openssl-devel
-    - readline-devel
-    - zlib-devel
+  yum: 
+    name: "{{ yum_packages }}"
+    state: present 
+    install_recommends: no
+  with_items: "{{ rbenv_users }}"
   become: yes
-  become_user: "{{ item[0] }}"
+  become_user: "{{ item }}"
   when: ansible_facts['distribution'] == "CentOS"
   
 - name: clone rbenv

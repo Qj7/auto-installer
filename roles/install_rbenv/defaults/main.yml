@@ -2,3 +2,26 @@ ruby_version: 2.6.5
 rails_version: 5.2.4.2
 rbenv_repo: https://github.com/rbenv/rbenv.git
 ruby_build_repo: https://github.com/rbenv/ruby-build.git
+
+apt_packages:
+- build-essential
+- curl
+- git
+- libcurl4-openssl-dev
+- libffi-dev
+- libreadline-dev
+- libssl-dev
+- libxml2-dev
+- libxslt1-dev
+- zlib1g-dev
+  
+yum_packages:
+- bzip2
+- curl
+- gcc
+- git
+- libffi-devel
+- libyaml-devel
+- openssl-devel
+- readline-devel
+- zlib-devel

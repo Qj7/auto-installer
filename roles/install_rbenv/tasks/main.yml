@@ -18,6 +18,7 @@
 - name: install packages Ubuntu
   apt: name={{ item }} state=present install_recommends=no
   with_items:
+    - "{{ rbenv_user }}"
     - build-essential
     - curl
     - git
@@ -29,12 +30,13 @@
     - libxslt1-dev
     - zlib1g-dev
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ item[0] }}"
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install packages for CentOS
   yum: name={{ item }} state=present install_recommends=no
   with_items:
+    - "{{ rbenv_user }}"
     - bzip2
     - curl
     - gcc
@@ -45,7 +47,7 @@
     - readline-devel
     - zlib-devel
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ item[0] }}"
   when: ansible_facts['distribution'] == "CentOS"
   
 - name: clone rbenv
@@ -54,8 +56,9 @@
     dest: "{{ ansible_env.HOME }}/.rbenv"
     accept_hostkey: yes
     force: yes
+  with_items: "{{ rbenv_users }}"  
   become: yes
-  become_user: "{{ ansible_user }}"  
+  become_user: "{{ item }}"  
 
 - name: clone rbenv plugins
   git:
@@ -63,8 +66,9 @@
     dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
     accept_hostkey: yes
     force: yes
+  with_items: "{{ rbenv_users }}"
   become: yes
-  become_user: "{{ ansible_user }}"  
+  become_user: "{{ item }}"
 
 - name: Test bashrc for line
   shell: "grep '^export PATH=$HOME/.rbenv/bin:$PATH;' {{ ansible_env.HOME }}/.bashrc -c || true"
@@ -91,8 +95,9 @@
     rbenv rehash
   args:
     executable: /bin/bash
+  with_items: "{{ rbenv_users }}"
   become: yes
-  become_user: "{{ ansible_user }}"  
+  become_user: "{{ item }}"
 
 - name: install bundler
   shell: |
@@ -100,6 +105,9 @@
     eval "$(rbenv init -)" 
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install --no-document bundler 
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
 
 - name: install rails
   shell: |
@@ -108,7 +116,10 @@
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install --no-document rails -v {{ rails_version }} && \
     rbenv rehash
-    
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+
 - name: Install PostgreSQL Ubuntu
   apt: name={{ item }} state=present install_recommends=no
   with_items:

@@ -20,7 +20,7 @@
     name: "{{ apt_packages }}"
     state: present
     install_recommends: no
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
   when: ansible_facts['distribution'] == "Ubuntu"
@@ -30,7 +30,7 @@
     name: "{{ yum_packages }}"
     state: present 
     install_recommends: no
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
   when: ansible_facts['distribution'] == "CentOS"
@@ -41,7 +41,7 @@
     dest: "{{ ansible_env.HOME }}/.rbenv"
     accept_hostkey: yes
     force: yes
-  with_items: "{{ rbenv_users }}"  
+  with_items: "{{ rbenv_user }}"  
   become: yes
   become_user: "{{ item }}"  
 
@@ -51,7 +51,7 @@
     dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
     accept_hostkey: yes
     force: yes
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
 
@@ -80,7 +80,7 @@
     rbenv rehash
   args:
     executable: /bin/bash
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
 
@@ -90,7 +90,7 @@
     eval "$(rbenv init -)" 
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install --no-document bundler 
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
 
@@ -101,7 +101,7 @@
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install --no-document rails -v {{ rails_version }} && \
     rbenv rehash
-  with_items: "{{ rbenv_users }}"
+  with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
 

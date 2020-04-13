@@ -75,24 +75,24 @@
   
 - name: install ruby
   shell: |
-    export PATH="${HOME}/.rbenv/bin:${PATH}" 
-    eval "$(rbenv init -)" 
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     rbenv install --skip-existing {{ ruby_version }} && \
     rbenv global {{ ruby_version }} && rbenv rehash
 
 - name: install bundler
   shell: |
-    export PATH="${HOME}/.rbenv/bin:${PATH}" 
-    eval "$(rbenv init -)" 
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     gem install --no-document bundler 
 
 - name: install rails
   shell: |
-    export PATH="${HOME}/.rbenv/bin:${PATH}" 
-    eval "$(rbenv init -)" 
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
+    export PATH="${HOME}/.rbenv/bin:${PATH}" \
+    eval "$(rbenv init -)" \
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
     gem install --no-document rails -v {{ rails_version }} && rbenv rehash
     
 - name: Install PostgreSQL Ubuntu

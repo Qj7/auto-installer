@@ -86,14 +86,14 @@
     export PATH="${HOME}/.rbenv/bin:${PATH}" 
     eval "$(rbenv init -)" 
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
-    gem install bundler --no-ri --no-rdoc
+    gem install --no-ri --no-rdoc bundler 
 
 - name: install rails
   shell: |
     export PATH="${HOME}/.rbenv/bin:${PATH}" 
     eval "$(rbenv init -)" 
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
-    gem install rails -v {{ rails_version }} --no-ri --no-rdoc && rbenv rehash
+    gem install --no-ri --no-rdoc rails -v {{ rails_version }} && rbenv rehash
     
 - name: Install PostgreSQL Ubuntu
   apt: name={{ item }} state=present install_recommends=no

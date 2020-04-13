@@ -1,25 +1,8 @@
 ---
-- name: update apt cache
-  apt:
-    update_cache: yes
-    cache_valid_time: 86400
-  become: true
-  changed_when: false
-  when: ansible_facts['distribution'] == "Ubuntu"
-  
-- name: update yum cache
-  yum:
-    update_cache: yes
-    cache_valid_time: 86400
-  become: true
-  changed_when: false
-  when: ansible_facts['distribution'] == "CentOS"  
-
 - name: install packages Ubuntu
   apt:
     name: "{{ apt_packages }}"
     state: present
-    install_recommends: no
   become: true
   when: ansible_facts['distribution'] == "Ubuntu"
 
@@ -27,7 +10,6 @@
   yum: 
     name: "{{ yum_packages }}"
     state: present 
-    install_recommends: no
   become: true
   when: ansible_facts['distribution'] == "CentOS"
   

@@ -2,23 +2,11 @@
 #
 
 RESET_FORMATTING='\e[0m'
-COLOR_CODE['red']=31
-
-print_with_color(){
-  local message="${1}"
-  local color="${2}"
-  if ! empty "$color"; then
-    escape_sequence="\e[${COLOR_CODE[$color]}m"
-    echo -e "${escape_sequence}${message}${RESET_FORMATTING}"
-  else
-    echo "$message"
-  fi
-}
+RED='\033[0;31m'
 
 is_root?(){
   if [[ "${USER:-}" == "root" ]] ; then
-    local message="This script works only with normal user, it wont work with root, please log in as normal user and try again."
-    print_with_color "${message}" 'red'
+    echo -e "${RED}This script works only with normal user, it wont work with root, please log in as normal user and try again.${RESET_FORMATTING}"
     exit 1
   fi
 }

@@ -3,4 +3,4 @@
 
   roles:
     - { role: 'ansible-role-nodejs', tags: 'init', become: yes, nodejs_install_npm_user: "{{ ansible_user_id }}" }
-    - { role: 'install_rbenv', tags: 'init', rbenv_user: "{{ ansible_user_id }}" }
+    - { role: 'install_rbenv', tags: 'init', become: yes, rbenv_user: "{{ ansible_user_id }}" }

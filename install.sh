@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 
 RESET_FORMATTING='\e[0m'
 COLOR_CODE['red']=31

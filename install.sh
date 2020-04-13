@@ -3,14 +3,6 @@
 RESET_FORMATTING='\e[0m'
 COLOR_CODE['red']=31
 
-is_root?(){
-  if [[ "${USER:-}" == "root" ]] ; then
-    local message="This script works only with normal user, it wont work with root, please log in as normal user and try again."
-    print_with_color ${message} 'red'
-    exit 1
-  fi
-}
-
 print_with_color(){
   local message="${1}"
   local color="${2}"
@@ -19,6 +11,14 @@ print_with_color(){
     echo -e "${escape_sequence}${message}${RESET_FORMATTING}"
   else
     echo "$message"
+  fi
+}
+
+is_root?(){
+  if [[ "${USER:-}" == "root" ]] ; then
+    local message="This script works only with normal user, it wont work with root, please log in as normal user and try again."
+    print_with_color ${message} 'red'
+    exit 1
   fi
 }
 

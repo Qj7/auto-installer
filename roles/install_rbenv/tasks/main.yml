@@ -83,16 +83,16 @@
 
 - name: install bundler
   shell: |
-    export PATH="${HOME}/.rbenv/bin:${PATH}" \
-    eval "$(rbenv init -)" \
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
+    export PATH="${HOME}/.rbenv/bin:${PATH}" 
+    eval "$(rbenv init -)" 
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install bundler --no-ri --no-rdoc
 
 - name: install rails
   shell: |
-    export PATH="${HOME}/.rbenv/bin:${PATH}" \
-    eval "$(rbenv init -)" \
-    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" \
+    export PATH="${HOME}/.rbenv/bin:${PATH}" 
+    eval "$(rbenv init -)" 
+    export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     gem install rails -v {{ rails_version }} --no-ri --no-rdoc && rbenv rehash
     
 - name: Install PostgreSQL Ubuntu

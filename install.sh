@@ -17,7 +17,7 @@ print_with_color(){
 is_root?(){
   if [[ "${USER:-}" == "root" ]] ; then
     local message="This script works only with normal user, it wont work with root, please log in as normal user and try again."
-    print_with_color ${message} 'red'
+    print_with_color "${message}" 'red'
     exit 1
   fi
 }

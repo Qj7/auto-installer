@@ -1,8 +1,8 @@
 ---
-- import_tasks: setup-RedHat.yml
+- include: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- import_tasks: setup-Debian.yml
+- include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Define nodejs_install_npm_user

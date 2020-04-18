@@ -17,4 +17,4 @@ cd auto-installer-master
 ansible-playbook playbook.yml -vvv
 cd ..
 rm -rf auto-installer-master
-source ~/.profile
+/bin/bash -c 'source ~/.bash_profile'

@@ -1,0 +1,27 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  role_name: yarn
+  author: tmiller02
+  description: Install the Yarn JS package manager
+  issue_tracker_url: https://github.com/tmiller02/ansible-role-yarn/issues
+  license: BSD
+  min_ansible_version: 2.6
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - bionic
+        - disco dingo
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+  galaxy_tags:
+    - javascript
+    - nodejs
+    - yarn

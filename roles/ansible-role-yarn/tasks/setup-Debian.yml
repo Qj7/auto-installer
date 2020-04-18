@@ -1,0 +1,23 @@
+---
+
+- name: Ensure apt-transport-https is installed
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Add the yarn apt key
+  apt_key:
+    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    state: present
+
+- name: Add the apt repository
+  apt_repository:
+    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+    state: present
+    filename: yarn
+    update_cache: yes
+
+- name: Install yarn
+  apt:
+    name: yarn
+    state: present

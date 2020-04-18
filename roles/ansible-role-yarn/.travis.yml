@@ -1,0 +1,22 @@
+---
+sudo: required
+language: python
+python:
+  - "3.6"
+  - "3.7"
+env:
+  - MOLECULE_IMAGE=centos:7
+  - MOLECULE_IMAGE=ubuntu:18.04
+  - MOLECULE_IMAGE=ubuntu:19.04
+  - MOLECULE_IMAGE=debian:stretch
+  - MOLECULE_IMAGE=debian:buster
+services:
+  - docker
+install:
+  - pip install tox-travis
+before_script:
+  - cd ../
+  - mv ansible-role-yarn tmiller02.yarn
+  - cd tmiller02.yarn
+script:
+  - tox

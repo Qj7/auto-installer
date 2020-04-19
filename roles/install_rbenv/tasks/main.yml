@@ -55,8 +55,6 @@
     export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" 
     rbenv install --skip-existing {{ ruby_version }}
     rbenv global {{ ruby_version }}"
-  args:
-    executable: /bin/bash
   with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
@@ -70,8 +68,6 @@
   with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
-  args:
-    executable: /bin/bash
 
 - name: install rails
   shell: |
@@ -83,8 +79,6 @@
   with_items: "{{ rbenv_user }}"
   become: yes
   become_user: "{{ item }}"
-  args:
-    executable: /bin/bash
 
 - name: Install PostgreSQL Ubuntu
   apt: name={{ item }} state=present install_recommends=no

@@ -37,6 +37,10 @@
   shell: "grep '^export PATH=$HOME/.rbenv/bin:$PATH;' {{ ansible_env.HOME }}/.bashrc -c || true"
   register: test_grep
 
+- name: Test bashrc for git show branch
+  shell: "grep '^parse_git_branch() {' {{ ansible_env.HOME }}/.bashrc -c || true"
+  register: test_grep2
+
 - name: Ensure rbenv is sourced from the .bashrc
   blockinfile:
     dest: "{{ ansible_env.HOME }}/.bashrc"
@@ -46,7 +50,26 @@
       eval "$(rbenv init -)"
     insertafter: EOF
     create: yes
-  when: test_grep.stdout == "0"  
+  when: test_grep.stdout == "0"
+
+- name: Ensure git branch name is sourced from the .bashrc
+  blockinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      force_color_prompt=yes
+      color_prompt=yes
+      parse_git_branch() {
+       git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+      }
+      if [ "$color_prompt" = yes ]; then
+       PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[00m\]\$ '
+      else
+       PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
+      fi
+      unset color_prompt force_color_prompt
+    insertafter: EOF
+    create: yes
+  when: test_grep2.stdout == "0"
   
 - name: install ruby
   shell: |
